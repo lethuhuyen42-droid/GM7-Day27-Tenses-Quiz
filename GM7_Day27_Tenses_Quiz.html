@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tense Master Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FFF4DE;
+    --card: #FFFFFF;
+    --ink: #2B2D42;
+    --coral: #FF6B6B;
+    --teal: #21B0A8;
+    --gold: #FFC93C;
+    --violet: #7B6EF6;
+    --leaf: #4CB963;
+    --line: #2B2D42;
+    --shadow: 6px 6px 0 var(--line);
+    --shadow-sm: 4px 4px 0 var(--line);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg: #23213A;
+      --card: #2F2D4C;
+      --ink: #F5F2FF;
+      --line: #F5F2FF;
+      --shadow: 6px 6px 0 var(--line);
+      --shadow-sm: 4px 4px 0 var(--line);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg: #23213A;
+    --card: #2F2D4C;
+    --ink: #F5F2FF;
+    --line: #F5F2FF;
+    --shadow: 6px 6px 0 var(--line);
+    --shadow-sm: 4px 4px 0 var(--line);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Nunito', sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding:32px 16px 60px;
+  }
+  .wrap{
+    width:100%;
+    max-width:660px;
+  }
+  h1, h2, h3, .headline{
+    font-family:'Baloo 2', sans-serif;
+  }
+  .top-title{
+    text-align:center;
+    font-size:clamp(28px, 6vw, 40px);
+    font-weight:800;
+    margin:0 0 6px;
+    color:var(--violet);
+    line-height:1.1;
+  }
+  .top-sub{
+    text-align:center;
+    font-size:15px;
+    font-weight:700;
+    color:var(--ink);
+    opacity:0.75;
+    margin:0 0 26px;
+  }
+  .card{
+    background:var(--card);
+    border:3px solid var(--line);
+    border-radius:22px;
+    box-shadow:var(--shadow);
+    padding:28px 24px 26px;
+  }
+  .progress-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:18px;
+    gap:12px;
+  }
+  .progress-track{
+    flex:1;
+    height:14px;
+    background:var(--bg);
+    border:2px solid var(--line);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--gold);
+    width:0%;
+    transition:width 0.35s ease;
+  }
+  .progress-label{
+    font-weight:800;
+    font-size:14px;
+    white-space:nowrap;
+  }
+  .score-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:var(--leaf);
+    color:#fff;
+    border:2px solid var(--line);
+    border-radius:999px;
+    padding:4px 12px;
+    font-weight:800;
+    font-size:13px;
+  }
+  .topic-tag{
+    display:inline-block;
+    background:var(--gold);
+    border:2px solid var(--line);
+    border-radius:999px;
+    padding:4px 14px;
+    font-weight:800;
+    font-size:12.5px;
+    margin-bottom:14px;
+    color:var(--ink);
+  }
+  .question{
+    font-size:clamp(18px, 4.2vw, 22px);
+    font-weight:800;
+    line-height:1.45;
+    margin:0 0 6px;
+  }
+  .question .hint{
+    color:var(--coral);
+  }
+  .question-help{
+    font-size:14px;
+    font-weight:700;
+    opacity:0.65;
+    margin:0 0 20px;
+  }
+  .options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+  @media (max-width:480px){
+    .options{ grid-template-columns:1fr; }
+  }
+  .option{
+    font-family:'Nunito', sans-serif;
+    font-size:15.5px;
+    font-weight:800;
+    text-align:left;
+    padding:15px 16px;
+    border-radius:16px;
+    border:3px solid var(--line);
+    background:var(--card);
+    box-shadow:var(--shadow-sm);
+    cursor:pointer;
+    color:var(--ink);
+    transition:transform 0.08s ease;
+  }
+  .option:nth-child(1){ background:#EAF3FF; }
+  .option:nth-child(2){ background:#FFEFEA; }
+  .option:nth-child(3){ background:#FFF8DE; }
+  .option:nth-child(4){ background:#EAFBF1; }
+  :root[data-theme="dark"] .option:nth-child(1){ background:#33375A; }
+  :root[data-theme="dark"] .option:nth-child(2){ background:#3E3155; }
+  :root[data-theme="dark"] .option:nth-child(3){ background:#3A3450; }
+  :root[data-theme="dark"] .option:nth-child(4){ background:#2E3E4A; }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) .option:nth-child(1){ background:#33375A; }
+    :root:not([data-theme="light"]) .option:nth-child(2){ background:#3E3155; }
+    :root:not([data-theme="light"]) .option:nth-child(3){ background:#3A3450; }
+    :root:not([data-theme="light"]) .option:nth-child(4){ background:#2E3E4A; }
+  }
+  .option:hover:not(:disabled){
+    transform:translate(-2px,-2px);
+    box-shadow:8px 8px 0 var(--line);
+  }
+  .option:active:not(:disabled){
+    transform:translate(0,0);
+    box-shadow:2px 2px 0 var(--line);
+  }
+  .option:disabled{
+    cursor:default;
+  }
+  .option.correct{
+    background:var(--leaf) !important;
+    color:#fff;
+  }
+  .option.wrong{
+    background:var(--coral) !important;
+    color:#fff;
+  }
+  .feedback{
+    margin-top:18px;
+    min-height:34px;
+    font-weight:800;
+    font-size:16px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .feedback.correct{ color:var(--leaf); }
+  .feedback.wrong{ color:var(--coral); }
+  .next-btn{
+    margin-top:16px;
+    width:100%;
+    font-family:'Baloo 2', sans-serif;
+    font-size:18px;
+    font-weight:700;
+    padding:14px;
+    border-radius:16px;
+    border:3px solid var(--line);
+    background:var(--violet);
+    color:#fff;
+    box-shadow:var(--shadow-sm);
+    cursor:pointer;
+  }
+  .next-btn:hover{
+    transform:translate(-2px,-2px);
+    box-shadow:8px 8px 0 var(--line);
+  }
+  .next-btn:active{
+    transform:translate(0,0);
+    box-shadow:2px 2px 0 var(--line);
+  }
+  .next-btn:disabled{
+    opacity:0.4;
+    cursor:not-allowed;
+    box-shadow:var(--shadow-sm);
+    transform:none;
+  }
+  .start-screen, .end-screen{
+    text-align:center;
+  }
+  .start-screen p, .end-screen p{
+    font-size:15.5px;
+    line-height:1.6;
+    font-weight:700;
+    opacity:0.85;
+  }
+  .big-badge{
+    display:inline-block;
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    background:var(--gold);
+    border:3px solid var(--line);
+    margin:0 auto 18px;
+  }
+  .tense-legend{
+    text-align:left;
+    background:var(--bg);
+    border:2px solid var(--line);
+    border-radius:14px;
+    padding:14px 18px;
+    margin:18px 0 22px;
+    font-size:14px;
+    font-weight:700;
+  }
+  .tense-legend div{
+    padding:3px 0;
+  }
+  .result-score{
+    font-family:'Baloo 2', sans-serif;
+    font-size:52px;
+    font-weight:800;
+    color:var(--violet);
+    margin:10px 0 4px;
+  }
+  .result-caption{
+    font-weight:800;
+    font-size:16px;
+    margin-bottom:22px;
+  }
+  .topic-breakdown{
+    text-align:left;
+    background:var(--bg);
+    border:2px solid var(--line);
+    border-radius:14px;
+    padding:14px 16px;
+    margin-bottom:20px;
+  }
+  .topic-breakdown div{
+    display:flex;
+    justify-content:space-between;
+    font-size:14.5px;
+    font-weight:800;
+    padding:5px 0;
+  }
+  .sound-toggle{
+    display:flex;
+    justify-content:center;
+    margin-top:14px;
+  }
+  .sound-toggle label{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:800;
+    font-size:13.5px;
+    opacity:0.8;
+    cursor:pointer;
+  }
+  .footer-note{
+    text-align:center;
+    font-size:12.5px;
+    font-weight:700;
+    opacity:0.55;
+    margin-top:22px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1 class="top-title">Tense Master Quiz</h1>
+  <p class="top-sub">Grade 7 grammar practice, five English tenses in one challenge</p>
+
+  <div class="card" id="cardArea">
+    <div class="start-screen" id="startScreen">
+      <div class="big-badge"></div>
+      <h2 style="margin:0 0 10px; font-size:24px;">Ready to play</h2>
+      <p>Pick the verb form that correctly completes each sentence. There are 40 questions mixing five tenses, some are simple and some are more challenging.</p>
+      <div class="tense-legend">
+        <div>Present Simple, for habits and facts</div>
+        <div>Present Continuous, for actions happening now</div>
+        <div>Present Perfect, for past actions linked to the present</div>
+        <div>Past Simple, for finished actions in the past</div>
+        <div>Past Continuous, for actions in progress in the past</div>
+      </div>
+      <button class="next-btn" id="startBtn">Start the quiz</button>
+      <div class="sound-toggle">
+        <label>
+          <input type="checkbox" id="soundCheck" checked>
+          Play sound effects
+        </label>
+      </div>
+    </div>
+
+    <div id="quizScreen" style="display:none;">
+      <div class="progress-row">
+        <span class="progress-label" id="questionCount">Question 1 of 40</span>
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        <span class="score-chip" id="scoreChip">Score 0</span>
+      </div>
+      <span class="topic-tag" id="topicTag">Present Simple</span>
+      <p class="question" id="questionText"></p>
+      <p class="question-help">Choose the correct verb form</p>
+      <div class="options" id="optionsArea"></div>
+      <p class="feedback" id="feedbackText"></p>
+      <button class="next-btn" id="nextBtn" disabled>Next question</button>
+    </div>
+
+    <div class="end-screen" id="endScreen" style="display:none;">
+      <h2 style="margin:0 0 4px; font-size:24px;">Quiz complete</h2>
+      <p class="result-score" id="finalScore">0 / 40</p>
+      <p class="result-caption" id="finalMessage"></p>
+      <div class="topic-breakdown" id="topicBreakdown"></div>
+      <button class="next-btn" id="restartBtn">Play again</button>
+    </div>
+  </div>
+
+  <p class="footer-note">Covers present simple, present continuous, present perfect, past simple and past continuous</p>
+</div>
+
+<script>
+(function(){
+
+  var QUESTIONS = [
+    {topic:"Present Simple", text:"She _____ (go) to school every day.", answer:"goes", options:["goes","go","is going","went"]},
+    {topic:"Present Simple", text:"Water _____ (boil) at 100 degrees Celsius.", answer:"boils", options:["boils","boil","is boiling","boiled"]},
+    {topic:"Present Simple", text:"My father _____ (not / like) coffee.", answer:"doesn't like", options:["doesn't like","don't like","isn't liking","didn't like"]},
+    {topic:"Present Simple", text:"Does your sister usually _____ (walk) to school?", answer:"walk", options:["walk","walks","is walking","walked"]},
+    {topic:"Present Simple", text:"The sun _____ (rise) in the east.", answer:"rises", options:["rises","rise","is rising","rose"]},
+    {topic:"Present Simple", text:"They _____ (play) football every weekend.", answer:"play", options:["play","plays","are playing","played"]},
+    {topic:"Present Simple", text:"He _____ (not / speak) French very well.", answer:"doesn't speak", options:["doesn't speak","don't speak","isn't speaking","didn't speak"]},
+    {topic:"Present Simple", text:"My grandmother _____ (cook) dinner for us every Sunday.", answer:"cooks", options:["cooks","cook","is cooking","cooked"]},
+
+    {topic:"Present Continuous", text:"Look! The children _____ (play) in the garden.", answer:"are playing", options:["are playing","play","played","have played"]},
+    {topic:"Present Continuous", text:"She _____ (not / study) right now, she is watching TV.", answer:"isn't studying", options:["isn't studying","doesn't study","wasn't studying","hasn't studied"]},
+    {topic:"Present Continuous", text:"Are you _____ (do) your homework at the moment?", answer:"doing", options:["doing","do","did","done"]},
+    {topic:"Present Continuous", text:"It _____ (rain) outside now, so take your umbrella.", answer:"is raining", options:["is raining","rains","rained","has rained"]},
+    {topic:"Present Continuous", text:"My brother _____ (use) my computer right now, so I cannot check my email.", answer:"is using", options:["is using","uses","used","has used"]},
+    {topic:"Present Continuous", text:"Listen! Someone _____ (knock) on the door.", answer:"is knocking", options:["is knocking","knocks","knocked","has knocked"]},
+    {topic:"Present Continuous", text:"The students _____ (not / listen) to the teacher, they are talking.", answer:"aren't listening", options:["aren't listening","don't listen","weren't listening","haven't listened"]},
+    {topic:"Present Continuous", text:"At the moment, my parents _____ (watch) a movie in the living room.", answer:"are watching", options:["are watching","watch","watched","have watched"]},
+
+    {topic:"Present Perfect", text:"I _____ (already / finish) my homework.", answer:"have already finished", options:["have already finished","already finished","am already finishing","already finish"]},
+    {topic:"Present Perfect", text:"She _____ (never / be) to Japan.", answer:"has never been", options:["has never been","never was","is never being","never is"]},
+    {topic:"Present Perfect", text:"We _____ (live) in this city since 2015.", answer:"have lived", options:["have lived","lived","are living","live"]},
+    {topic:"Present Perfect", text:"Have you ever _____ (try) Vietnamese food?", answer:"tried", options:["tried","try","trying","tries"]},
+    {topic:"Present Perfect", text:"He _____ (just / arrive) at the airport.", answer:"has just arrived", options:["has just arrived","just arrived","is just arriving","just arrives"]},
+    {topic:"Present Perfect", text:"They _____ (not / finish) the project yet.", answer:"haven't finished", options:["haven't finished","didn't finish","aren't finishing","don't finish"]},
+    {topic:"Present Perfect", text:"My sister _____ (lose) her keys, she cannot find them anywhere.", answer:"has lost", options:["has lost","lost","is losing","loses"]},
+    {topic:"Present Perfect", text:"I _____ (know) him for ten years.", answer:"have known", options:["have known","knew","know","am knowing"]},
+
+    {topic:"Past Simple", text:"We _____ (visit) our grandparents last weekend.", answer:"visited", options:["visited","visit","have visited","were visiting"]},
+    {topic:"Past Simple", text:"She _____ (not / go) to school yesterday because she was sick.", answer:"didn't go", options:["didn't go","doesn't go","hasn't gone","wasn't going"]},
+    {topic:"Past Simple", text:"Did you _____ (see) that movie last night?", answer:"see", options:["see","saw","seeing","seen"]},
+    {topic:"Past Simple", text:"He _____ (buy) a new bike two days ago.", answer:"bought", options:["bought","buys","has bought","was buying"]},
+    {topic:"Past Simple", text:"They _____ (not / have) enough time to finish the test.", answer:"didn't have", options:["didn't have","don't have","haven't had","weren't having"]},
+    {topic:"Past Simple", text:"My family _____ (move) to Hanoi in 2010.", answer:"moved", options:["moved","moves","has moved","was moving"]},
+    {topic:"Past Simple", text:"The teacher _____ (give) us a lot of homework last week.", answer:"gave", options:["gave","gives","has given","was giving"]},
+    {topic:"Past Simple", text:"I _____ (not / see) him at the party last night.", answer:"didn't see", options:["didn't see","don't see","haven't seen","wasn't seeing"]},
+
+    {topic:"Past Continuous", text:"While I _____ (do) my homework, my brother was watching TV.", answer:"was doing", options:["was doing","did","have done","do"]},
+    {topic:"Past Continuous", text:"They _____ (play) football when it started to rain.", answer:"were playing", options:["were playing","played","have played","play"]},
+    {topic:"Past Continuous", text:"What were you _____ (do) at 8 pm last night?", answer:"doing", options:["doing","did","done","do"]},
+    {topic:"Past Continuous", text:"She _____ (not / listen) to the teacher when he asked her a question.", answer:"wasn't listening", options:["wasn't listening","didn't listen","isn't listening","hasn't listened"]},
+    {topic:"Past Continuous", text:"While my mother _____ (cook) dinner, I was setting the table.", answer:"was cooking", options:["was cooking","cooked","has cooked","cooks"]},
+    {topic:"Past Continuous", text:"The children _____ (sleep) when the phone rang.", answer:"were sleeping", options:["were sleeping","slept","have slept","sleep"]},
+    {topic:"Past Continuous", text:"I _____ (walk) to school when I saw my friend.", answer:"was walking", options:["was walking","walked","have walked","walk"]},
+    {topic:"Past Continuous", text:"We _____ (not / watch) TV at 9 pm, we were doing our homework.", answer:"weren't watching", options:["weren't watching","didn't watch","aren't watching","haven't watched"]}
+  ];
+
+  function shuffle(arr){
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  var gameQuestions = [];
+  var currentIndex = 0;
+  var score = 0;
+  var answered = false;
+  var topicScores = {};
+
+  var startScreen = document.getElementById('startScreen');
+  var quizScreen = document.getElementById('quizScreen');
+  var endScreen = document.getElementById('endScreen');
+  var startBtn = document.getElementById('startBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var restartBtn = document.getElementById('restartBtn');
+  var soundCheck = document.getElementById('soundCheck');
+  var questionText = document.getElementById('questionText');
+  var optionsArea = document.getElementById('optionsArea');
+  var feedbackText = document.getElementById('feedbackText');
+  var questionCount = document.getElementById('questionCount');
+  var progressFill = document.getElementById('progressFill');
+  var scoreChip = document.getElementById('scoreChip');
+  var topicTag = document.getElementById('topicTag');
+  var finalScore = document.getElementById('finalScore');
+  var finalMessage = document.getElementById('finalMessage');
+  var topicBreakdown = document.getElementById('topicBreakdown');
+
+  var audioCtx = null;
+  function getAudioContext(){
+    if (!audioCtx){
+      try {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      } catch(e){
+        audioCtx = null;
+      }
+    }
+    return audioCtx;
+  }
+
+  function playTone(freqs, durations, type){
+    if (!soundCheck.checked) return;
+    var ctx = getAudioContext();
+    if (!ctx) return;
+    var t = ctx.currentTime;
+    freqs.forEach(function(freq, i){
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, t);
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.exponentialRampToValueAtTime(0.18, t + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + durations[i]);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + durations[i] + 0.02);
+      t += durations[i] * 0.85;
+    });
+  }
+
+  function playCorrectSound(){
+    playTone([523.25, 659.25, 783.99], [0.12, 0.12, 0.22], 'sine');
+  }
+
+  function playWrongSound(){
+    playTone([220, 174.6], [0.16, 0.28], 'sawtooth');
+  }
+
+  function startQuiz(){
+    gameQuestions = shuffle(QUESTIONS).map(function(q){
+      return {
+        topic: q.topic,
+        text: q.text,
+        answer: q.answer,
+        options: shuffle(q.options)
+      };
+    });
+    currentIndex = 0;
+    score = 0;
+    topicScores = {};
+    startScreen.style.display = 'none';
+    endScreen.style.display = 'none';
+    quizScreen.style.display = 'block';
+    renderQuestion();
+  }
+
+  function updateScoreChip(){
+    scoreChip.textContent = 'Score ' + score;
+  }
+
+  function renderQuestion(){
+    answered = false;
+    var q = gameQuestions[currentIndex];
+    questionCount.textContent = 'Question ' + (currentIndex + 1) + ' of ' + gameQuestions.length;
+    progressFill.style.width = (currentIndex / gameQuestions.length * 100) + '%';
+    topicTag.textContent = q.topic;
+    questionText.textContent = q.text;
+    feedbackText.textContent = '';
+    feedbackText.className = 'feedback';
+    nextBtn.disabled = true;
+    updateScoreChip();
+
+    optionsArea.innerHTML = '';
+    q.options.forEach(function(opt){
+      var btn = document.createElement('button');
+      btn.className = 'option';
+      btn.textContent = opt;
+      btn.addEventListener('click', function(){
+        selectAnswer(btn, opt, q);
+      });
+      optionsArea.appendChild(btn);
+    });
+  }
+
+  function selectAnswer(btn, chosen, q){
+    if (answered) return;
+    answered = true;
+    var isCorrect = chosen === q.answer;
+
+    if (!topicScores[q.topic]) topicScores[q.topic] = {correct:0, total:0};
+    topicScores[q.topic].total += 1;
+
+    var allButtons = optionsArea.querySelectorAll('.option');
+    allButtons.forEach(function(b){
+      b.disabled = true;
+      if (b.textContent === q.answer){
+        b.classList.add('correct');
+      }
+    });
+
+    if (isCorrect){
+      score += 1;
+      topicScores[q.topic].correct += 1;
+      btn.classList.add('correct');
+      feedbackText.textContent = 'Correct. Well done.';
+      feedbackText.className = 'feedback correct';
+      playCorrectSound();
+    } else {
+      btn.classList.remove('correct');
+      btn.classList.add('wrong');
+      feedbackText.textContent = 'Not quite. The correct answer is ' + q.answer + '.';
+      feedbackText.className = 'feedback wrong';
+      playWrongSound();
+    }
+
+    updateScoreChip();
+    nextBtn.disabled = false;
+    nextBtn.textContent = (currentIndex === gameQuestions.length - 1) ? 'See my results' : 'Next question';
+  }
+
+  function goNext(){
+    if (!answered) return;
+    currentIndex += 1;
+    if (currentIndex >= gameQuestions.length){
+      showResults();
+    } else {
+      renderQuestion();
+    }
+  }
+
+  function showResults(){
+    progressFill.style.width = '100%';
+    quizScreen.style.display = 'none';
+    endScreen.style.display = 'block';
+    finalScore.textContent = score + ' / ' + gameQuestions.length;
+
+    var pct = score / gameQuestions.length;
+    var message;
+    if (pct === 1){
+      message = 'Perfect score. You have mastered these five tenses.';
+    } else if (pct >= 0.8){
+      message = 'Great job. Just a few points to review.';
+    } else if (pct >= 0.5){
+      message = 'Good effort. Keep practicing the tense you missed most.';
+    } else {
+      message = 'Keep going. Review the tense rules and try again.';
+    }
+    finalMessage.textContent = message;
+
+    topicBreakdown.innerHTML = '';
+    Object.keys(topicScores).forEach(function(topic){
+      var row = document.createElement('div');
+      var t = topicScores[topic];
+      row.innerHTML = '<span>' + topic + '</span><span>' + t.correct + ' / ' + t.total + '</span>';
+      topicBreakdown.appendChild(row);
+    });
+  }
+
+  startBtn.addEventListener('click', startQuiz);
+  nextBtn.addEventListener('click', goNext);
+  restartBtn.addEventListener('click', function(){
+    endScreen.style.display = 'none';
+    startScreen.style.display = 'block';
+  });
+
+})();
+</script>
+</body>
+</html>
